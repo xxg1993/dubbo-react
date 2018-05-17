@@ -1,0 +1,3 @@
+com\xxg\service\impl\UserServiceImpl.class
+com\xxg\dao\UserDao.class
+com\xxg\dao\impl\UserDaoImpl.class

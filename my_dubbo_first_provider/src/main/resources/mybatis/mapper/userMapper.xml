@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxg.model.userMapper">
+    <resultMap id="userMap" type="user">
+        <id column="id_key" property="id_key" />
+        <result column="name" property="name" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
+        <result column="descrip" property="descrip" />
+        <result column="id" property="id" />
+    </resultMap>
+    
+    <sql id="user">dubbo_react</sql>
+    <sql id="columu_all">
+        id_key, name, age, sex, descrip, id
+    </sql>
+    
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id_key">
+        INSERT INTO
+        <include refid="user" />
+        (name, age, sex, descrip, id)
+        VALUES
+        (#{name},#{age}, #{sex}, #{descrip}, #{id})
+    </insert>
+    
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        DELETE FROM 
+        <include refid="user" /> 
+        WHERE 
+        id_key = #{id_key}
+    </delete>
+    
+    <update id="updateUser" parameterType="user" >  
+        UPDATE 
+        <include refid="user" />
+	    <set >  
+	      <if test="name != null" >  
+	        NAME = #{name},  
+	      </if>  
+	      <if test="age != null" >  
+            AGE = #{age},  
+          </if>  
+          <if test="sex != null" >  
+            SEX = #{sex},  
+          </if>  
+          <if test="descrip != null" >  
+            DESCRIP = #{descrip},  
+          </if>  
+          <if test="id != null" >  
+            ID = #{id},  
+          </if>  
+	    </set>  
+	    WHERE
+	     ID_KEY = #{id_key}  
+  </update>  
+    
+    
+    
+    
+    <select id="listBy" parameterType="map" resultMap="userMap">
+        SELECT
+        <include refid="columu_all" />
+        FROM
+        <include refid="user" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        <if test="rowNum != null">
+            LIMIT #{rowNum}
+        </if>
+    </select>
+    
+    <sql id="condition_sql">
+        <if test="username != null">
+            AND id_key = #{id_key}
+        </if>
+    </sql>
+
+</mapper>
